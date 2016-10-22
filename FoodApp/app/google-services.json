@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "7866672595",
+    "project_id": "sanguine-method-110804"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7866672595:android:79a9019fc51e2f0d",
+        "android_client_info": {
+          "package_name": "com.example.jesse.findfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7866672595-dlgmsd2vc90bh9f1lmomvl85fre4j45u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jesse.findfood",
+            "certificate_hash": "42EF21DC28B92C5597E088560F50FF2A66A9CB36"
+          }
+        },
+        {
+          "client_id": "7866672595-gs6qhil4t19okupmjhephgd6ppcc7lq5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoS_Ehlxz_sEU_bX1qdHi_jziedpOWfE4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
