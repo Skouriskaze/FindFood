@@ -39,6 +39,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class Map extends AppCompatActivity
@@ -62,6 +64,9 @@ public class Map extends AppCompatActivity
 
     private boolean isStartMarked;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +78,13 @@ public class Map extends AppCompatActivity
 
         mContext = this;
         isStartMarked = false;
+
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        if (mUser != null) {
+           Log.d("FIREBASE", mUser.getEmail());
+        }
 
         String[] arra = new String[10];
         for (int i = 0; i < 10; i++) arra[i] = "Comment " + i;
