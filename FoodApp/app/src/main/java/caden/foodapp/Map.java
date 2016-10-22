@@ -1,6 +1,7 @@
 package caden.foodapp;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,11 +20,13 @@ import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -285,18 +288,47 @@ public class Map extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.action_add:
                 Log.d("Action", "Marker to be added");
-                LatLng loc = new LatLng(m_Location.getLatitude(), m_Location.getLongitude());
+                final LatLng loc = new LatLng(m_Location.getLatitude(), m_Location.getLongitude());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Created new food").setTitle("New Food");
+                final LayoutInflater layoutInflater = this.getLayoutInflater();
+                builder.setView(layoutInflater.inflate(R.layout.dialog_marker, null))
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String desc = ((TextView) findViewById(R.id.desc)).getText().toString();
+                                mMap.addMarker(new MarkerOptions().position(loc).title(desc));
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
 
                 builder.show();
 
 
-                mMap.addMarker(new MarkerOptions().position(loc).title("New Food"));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public class MarkerDialog extends Dialog {
+
+        public MarkerDialog(Context context) {
+            super(context);
+        }
+
+        public MarkerDialog(Context context, int themeResId) {
+            super(context, themeResId);
+        }
+
+        protected MarkerDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+            super(context, cancelable, cancelListener);
         }
     }
 }

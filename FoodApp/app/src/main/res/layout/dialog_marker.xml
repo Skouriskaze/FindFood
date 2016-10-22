@@ -7,14 +7,16 @@
         android:text="New Food Marker"
         android:textSize="25sp"
         android:textColor="#000"
-        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/desc"
         android:hint="Enter Description"
         android:layout_margin="4px"
-        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
