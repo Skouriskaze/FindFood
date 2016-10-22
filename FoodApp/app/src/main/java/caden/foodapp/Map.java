@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -269,12 +270,12 @@ public class Map extends AppCompatActivity
     @Override
     public void onLocationChanged(Location location) {
         m_Location = location;
-        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-        /*if (!isStartMarked) {
-            mMap.addMarker(new MarkerOptions().position(loc).title("Your Location"));
+        if (!isStartMarked) {
+            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            //mMap.addMarker(new MarkerOptions().position(loc).title("Your Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
             isStartMarked = true;
-        } */
+        }
     }
 
 //    @Override
@@ -303,11 +304,12 @@ public class Map extends AppCompatActivity
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater layoutInflater = this.getLayoutInflater();
-        builder.setView(layoutInflater.inflate(R.layout.dialog_marker, null))
+        final View dialogView = layoutInflater.inflate(R.layout.dialog_marker, null, false);
+        builder.setView(dialogView)
                 .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String desc = "New Food";
+                        String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
                         mMap.addMarker(new MarkerOptions().position(loc).title(desc));
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
                     }
