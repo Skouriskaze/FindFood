@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ public class Login extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    private EditText emailfield;
+    private AutoCompleteTextView emailfield;
     private EditText pswfield;
     private ProgressBar progressBar;
     private TextView signinloading;
@@ -38,7 +39,7 @@ public class Login extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        emailfield = (EditText) findViewById(R.id.email);
+        emailfield = (AutoCompleteTextView) findViewById(R.id.email);
         pswfield = (EditText) findViewById(R.id.password);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -56,17 +57,16 @@ public class Login extends AppCompatActivity {
     }
 
     public void transition(final View view) {
-
 //        Close off keyboard
         ConstraintLayout main;
-
-        // Get your layout set up, this is just an example
+//        Get your layout set up, this is just an example
         main = (ConstraintLayout) findViewById(R.id.activity_login);
-
-        // Then just use the following:
+//        Then just use the following:
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(main.getWindowToken(), 0);
 
+        signinloading.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(emailfield.getText().toString(), pswfield.getText()
                 .toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -76,9 +76,11 @@ public class Login extends AppCompatActivity {
                     Intent intent = new Intent(Login.this, Map.class);
                     startActivity(intent);
                 } else {
-                    Snackbar.make(view, "Invalid credentials, please try again.", Snackbar
+                    Snackbar.make(view, task.getException().getMessage(), Snackbar
                             .LENGTH_SHORT).show();
                 }
+                signinloading.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
