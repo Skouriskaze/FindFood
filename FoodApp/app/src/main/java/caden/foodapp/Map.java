@@ -19,6 +19,9 @@ import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -251,10 +254,37 @@ public class Map extends AppCompatActivity
     public void onLocationChanged(Location location) {
         m_Location = location;
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-        if (!isStartMarked) {
+        /*if (!isStartMarked) {
             mMap.addMarker(new MarkerOptions().position(loc).title("Your Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
             isStartMarked = true;
+        } */
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_add, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                Log.d("Action", "Marker to be added");
+                LatLng loc = new LatLng(m_Location.getLatitude(), m_Location.getLongitude());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Created new food").setTitle("New Food");
+
+                builder.show();
+
+
+                mMap.addMarker(new MarkerOptions().position(loc).title("New Food"));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
