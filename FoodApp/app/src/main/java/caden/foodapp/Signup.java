@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,6 +20,8 @@ public class Signup extends AppCompatActivity {
 
     private EditText emailfield;
     private EditText pswfield;
+    private ProgressBar progressBar;
+    private TextView signuploading;
 
     private FirebaseAuth mAuth;
 
@@ -29,12 +33,16 @@ public class Signup extends AppCompatActivity {
         emailfield = (EditText) findViewById(R.id.email);
         pswfield = (EditText) findViewById(R.id.password);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        signuploading = (TextView) findViewById(R.id.signuptext);
+
         mAuth = FirebaseAuth.getInstance();
     }
 
     public void signUpAction(final View view) {
-        System.out.println(emailfield.getText());
-        System.out.println(pswfield.getText());
+
+        signuploading.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         mAuth.createUserWithEmailAndPassword(emailfield.getText().toString(), pswfield.getText()
                 .toString())
@@ -43,10 +51,12 @@ public class Signup extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("FIREBASE", "createUserWithEmail:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
-                            Snackbar.make(view, "Failed to create account, check your internet " +
-                                    "connection", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(view, "OOPS SOMETHING BAD HAS HAPPENED :(", Snackbar.LENGTH_SHORT).show();
                         }
+                        signuploading.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                     }
+
                 });
     }
 }
