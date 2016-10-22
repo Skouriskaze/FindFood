@@ -88,7 +88,7 @@ public class Map extends AppCompatActivity
         mUser = mAuth.getCurrentUser();
 
         if (mUser != null) {
-           Log.d("FIREBASE", mUser.getEmail());
+            Log.d("FIREBASE", mUser.getEmail());
         }
 
         String[] arra = new String[10];
@@ -213,6 +213,7 @@ public class Map extends AppCompatActivity
                         return;
                     }
                     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                    mMap.setMyLocationEnabled(true);
                     //updateLocation();
                     //m_Location = getLocation();
                 } else {
@@ -254,15 +255,15 @@ public class Map extends AppCompatActivity
         mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(10000).setFastestInterval(2000);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-                return;
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
@@ -273,8 +274,13 @@ public class Map extends AppCompatActivity
         if (!isStartMarked) {
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
             //mMap.addMarker(new MarkerOptions().position(loc).title("Your Location"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
             isStartMarked = true;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                return;
+            }
+            mMap.setMyLocationEnabled(true);
         }
     }
 
