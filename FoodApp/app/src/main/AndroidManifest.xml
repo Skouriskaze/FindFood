@@ -50,11 +50,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SignUp">
         </activity>
-        <activity
-            android:name=".Campus_Chooser"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Login">
-        </activity>
     </application>
 
 </manifest>
