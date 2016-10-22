@@ -109,8 +109,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="24dp"
         android:onClick="signUpAction"
-        app:layout_constraintTop_toBottomOf="@+id/cfmpswHolder"
-        app:layout_constraintHorizontal_bias="0.52"/>
+        app:layout_constraintTop_toBottomOf="@+id/cfmpswHolder" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -118,23 +117,20 @@
         android:id="@+id/signuptext"
         android:text="Signing up..."
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_sign_up_button"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:visibility="visible"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="32dp"
-        android:layout_height="32dp"
-        android:layout_width="32dp"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_sign_up_button"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        android:visibility="gone"
+        android:layout_marginTop="36dp"/>
 
 </android.support.constraint.ConstraintLayout>
