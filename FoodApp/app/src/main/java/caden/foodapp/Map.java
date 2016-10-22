@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -276,45 +277,49 @@ public class Map extends AppCompatActivity
         } */
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_add, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_add, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                Log.d("Action", "Marker to be added");
-                final LatLng loc = new LatLng(m_Location.getLatitude(), m_Location.getLongitude());
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_add:
+//
+////                addDialog();
+//
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                final LayoutInflater layoutInflater = this.getLayoutInflater();
-                builder.setView(layoutInflater.inflate(R.layout.dialog_marker, null))
-                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String desc = "New Food";
-                                mMap.addMarker(new MarkerOptions().position(loc).title(desc));
-                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
+    public void addDialog(View view) {
+        Log.d("Action", "Marker to be added");
+        final LatLng loc = new LatLng(m_Location.getLatitude(), m_Location.getLongitude());
 
-                builder.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final LayoutInflater layoutInflater = this.getLayoutInflater();
+        builder.setView(layoutInflater.inflate(R.layout.dialog_marker, null))
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String desc = "New Food";
+                        mMap.addMarker(new MarkerOptions().position(loc).title(desc));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
 
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        builder.show();
     }
 
     public class MarkerDialog extends Dialog {

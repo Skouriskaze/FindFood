@@ -118,18 +118,11 @@
         android:id="@+id/progressBar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/signUpLinkButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/signUpLinkButton"
+        android:layout_marginTop="36dp"/>
 
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guideline"
-        app:layout_constraintGuide_begin="20dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="361dp"
-        tools:layout_editor_absoluteX="-22dp"/>
 
 </android.support.constraint.ConstraintLayout>

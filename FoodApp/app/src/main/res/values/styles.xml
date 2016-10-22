@@ -38,4 +38,14 @@
         <item name="colorControlHighlight">#fff</item>
     </style>
 
+    <!-- Map Theme-->
+    <style name="AppTheme.Maps" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>
