@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,7 +36,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class Map extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener{
+public class Map extends AppCompatActivity
+        implements
+        OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        GoogleMap.OnMarkerClickListener,
+        LocationListener {
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 6;
@@ -45,6 +53,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     private GoogleApiClient mGoogleApiClient;
     private LocationManager m_LocationManager;
     private Location m_Location;
+    private LocationRequest mLocationRequest;
+
+    private boolean isStartMarked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +67,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         mapFragment.getMapAsync(this);
 
         mContext = this;
+        isStartMarked = false;
 
         if (checkPlayServices()) {
             // If this check succeeds, proceed with normal processing.
@@ -115,18 +127,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         mMap.setOnMarkerClickListener(this);
 
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        updateLocation();
-        m_Location = getLocation();
-        if (m_Location != null) {
-            LatLng loc = new LatLng(m_Location.getLatitude(), m_Location.getLongitude());
+        //updateLocation();
+        //m_Location = getLocation();
 
 
-            // Add a marker in Sydney and move the camera
-            mMap.addMarker(new MarkerOptions().position(loc).title("Marker in Sydney"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-        } else {
-            Log.e("Location", "Location is null.");
-        }
     }
 
     private boolean checkPlayServices() {
@@ -153,7 +157,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        startLocationUpdate();
     }
 
     @Override
@@ -176,8 +180,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    updateLocation();
-                    m_Location = getLocation();
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                    //updateLocation();
+                    //m_Location = getLocation();
                 } else {
                     Log.e("Map", "Permission Denied");
                 }
@@ -185,17 +193,20 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         }
     }
 
+    /*
     private void updateLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+            Log.d("Map", "Location enabled");
         } else {
             ActivityCompat.requestPermissions(Map.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
-    }
+    } */
 
+    /*
     public Location getLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -208,7 +219,33 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         Location location = m_LocationManager.getLastKnownLocation(bestProvider);
         Location loc2 = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         return loc2;
+    } */
+
+    protected void startLocationUpdate() {
+        mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(10000).setFastestInterval(2000);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
-
+    @Override
+    public void onLocationChanged(Location location) {
+        m_Location = location;
+        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+        if (!isStartMarked) {
+            mMap.addMarker(new MarkerOptions().position(loc).title("Your Location"));
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+    }
 }
+
