@@ -1,11 +1,14 @@
 package caden.foodapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,13 +23,26 @@ public class CampusChooser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campus_chooser);
 
-        List<Campus> campuses = new ArrayList<>();
+        final List<Campus> campuses = new ArrayList<>();
         campuses.add(new Campus("Harvard University", "Cambridge, MA 02138"));
         campuses.add(new Campus("Massachusetts Institute of Technology", "77 Massachusetts Ave, Cambridge, MA 02139"));
         CampusArrayAdapter adapter = new CampusArrayAdapter(this, campuses);
 
         ListView lvCampuses = (ListView) findViewById(R.id.lvCampuses);
         lvCampuses.setAdapter(adapter);
+        final Context ctx = this;
+        lvCampuses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Campus campus= campuses.get(position);
+                Intent intent = new Intent(ctx, Map.class);
+
+                intent.putExtra("Name", campus.getName());
+                intent.putExtra("Address", campus.getAddress());
+
+                startActivity(intent);
+            }
+        });
     }
 
     public class CampusArrayAdapter extends ArrayAdapter<Campus> {

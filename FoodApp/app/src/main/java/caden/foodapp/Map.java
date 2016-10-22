@@ -72,6 +72,8 @@ public class Map extends AppCompatActivity
     private FirebaseAuth mAuth;
     private FirebaseUser mUser = null;
 
+    private Campus mCampus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +100,14 @@ public class Map extends AppCompatActivity
         ListView lvComments = (ListView) findViewById(R.id.lvComments);
         lvComments.setAdapter(adapter);
 
+        mCampus = new Campus(getIntent().getStringExtra("Name"), getIntent().getStringExtra("Address"));
+        if (!mCampus.getName().equals("") && mCampus.getName() != null) {
+            
+        }
+
+        Toast.makeText(this, mCampus.toString(), Toast.LENGTH_SHORT).show();
+
+        
         if (checkPlayServices()) {
             // If this check succeeds, proceed with normal processing.
             // Otherwise, prompt user to get valid Play Services APK.

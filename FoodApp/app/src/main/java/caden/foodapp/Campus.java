@@ -28,4 +28,9 @@ public class Campus {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return this.name + ": " + this.address;
+    }
 }
