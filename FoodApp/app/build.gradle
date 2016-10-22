@@ -29,6 +29,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:9.8.00'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
+
+    compile 'com.google.firebase:firebase-auth:9.6.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

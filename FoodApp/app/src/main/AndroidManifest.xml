@@ -44,7 +44,10 @@
             android:label="@string/title_activity_map"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Signup">
+        <activity
+            android:name=".Signup"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SignUp">
         </activity>
     </application>
 
