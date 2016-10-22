@@ -2,6 +2,7 @@ package caden.foodapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -36,6 +37,13 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/economica.otf");
+        Typeface tf_i = Typeface.createFromAsset(getAssets(), "fonts/economica_italic.otf");
+        TextView tv1 = (TextView) findViewById(R.id.appLbl);
+        TextView tv2 = (TextView) findViewById(R.id.ffd);
+        tv1.setTypeface(tf);
+        tv2.setTypeface(tf_i);
 
         mAuth = FirebaseAuth.getInstance();
 
