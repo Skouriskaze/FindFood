@@ -296,7 +296,7 @@ public class Map extends AppCompatActivity
                         .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String desc = ((TextView) findViewById(R.id.desc)).getText().toString();
+                                String desc = "New Food";
                                 mMap.addMarker(new MarkerOptions().position(loc).title(desc));
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
                             }
