@@ -1,4 +1,4 @@
-package com.example.jesse.foodapp;
+package caden.foodapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.jesse.foodapp", appContext.getPackageName());
+        assertEquals("caden.foodapp", appContext.getPackageName());
     }
 }
