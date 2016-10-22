@@ -14,10 +14,10 @@
         android:layout_weight="1"
         tools:context="caden.foodapp.Map"/>
 
-    <TextView
+    <ListView
+        android:id="@+id/lvComments"
+        android:layout_weight="2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Checking"
-        android:layout_weight="2"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

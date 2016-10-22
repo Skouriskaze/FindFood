@@ -19,6 +19,8 @@ import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -68,6 +70,13 @@ public class Map extends AppCompatActivity
 
         mContext = this;
         isStartMarked = false;
+
+        String[] arra = new String[10];
+        for (int i = 0; i < 10; i++) arra[i] = "Comment " + i;
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item_food, arra);
+
+        ListView lvComments = (ListView) findViewById(R.id.lvComments);
+        lvComments.setAdapter(adapter);
 
         if (checkPlayServices()) {
             // If this check succeeds, proceed with normal processing.
@@ -244,8 +253,8 @@ public class Map extends AppCompatActivity
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
         if (!isStartMarked) {
             mMap.addMarker(new MarkerOptions().position(loc).title("Your Location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+            isStartMarked = true;
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
     }
 }
-
