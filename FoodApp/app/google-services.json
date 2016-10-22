@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "928181005913",
+    "firebase_url": "https://foodapp-1477126080392.firebaseio.com",
+    "project_id": "foodapp-1477126080392",
+    "storage_bucket": "foodapp-1477126080392.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928181005913:android:b3ca44344f4358a1",
+        "android_client_info": {
+          "package_name": "caden.foodapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928181005913-9fip3kpe55kbh0gg1loe23peajq7dfpt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6yz7pLiKA_O5Iv61q-nKM5nJQU8kIYjk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
