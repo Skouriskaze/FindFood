@@ -9,8 +9,8 @@ public class Pin {
     private float latitute;
     private float longitude;
     private String title;
-}
-    public Pin() {
 
+    public Pin() {
     }
+}
 
