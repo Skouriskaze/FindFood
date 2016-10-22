@@ -329,19 +329,4 @@ public class Map extends AppCompatActivity
 
         builder.show();
     }
-
-    public class MarkerDialog extends Dialog {
-
-        public MarkerDialog(Context context) {
-            super(context);
-        }
-
-        public MarkerDialog(Context context, int themeResId) {
-            super(context, themeResId);
-        }
-
-        protected MarkerDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
-            super(context, cancelable, cancelListener);
-        }
-    }
 }
