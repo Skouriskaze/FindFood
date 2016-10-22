@@ -81,7 +81,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(Login.this, Map.class);
+                    Intent intent = new Intent(Login.this, Campus_Chooser.class);
                     startActivity(intent);
                 } else {
                     Snackbar.make(view, task.getException().getMessage(), Snackbar
