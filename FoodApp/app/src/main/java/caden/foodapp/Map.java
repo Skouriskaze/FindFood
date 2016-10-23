@@ -47,6 +47,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,6 +89,11 @@ public class Map extends AppCompatActivity
     private FloatingActionButton fab;
     private boolean isStateDragging;
 
+    private FirebaseDatabase database;
+    private DatabaseReference ref;
+
+    private List<Pin> mPins;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +109,23 @@ public class Map extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference().child("Pins").child(mCampus.getName());
+        mPins = new ArrayList<>();
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //
+                Log.d("Database", dataSnapshot.toString());
+                int x = 1+1;
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Database", "Cancelled???");
+            }
+        });
 
         if (mUser != null) {
             Log.d("FIREBASE", mUser.getEmail());
@@ -351,6 +378,9 @@ public class Map extends AppCompatActivity
 
                             Pin pin = new Pin(mCampus, camPos, desc, type, tags);
                             mark.setTag(pin);
+
+                            mPins.add(pin);
+                            ref.child(mCampus.getName()).setValue(mPins);
 
                             mark.showInfoWindow();
                             mCamMarker.remove();

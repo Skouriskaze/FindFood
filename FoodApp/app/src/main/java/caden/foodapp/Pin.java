@@ -11,33 +11,37 @@ import java.util.List;
 public class Pin {
 
     private Campus campus;
-    private LatLng loc;
-    private String desc;
+    private LatLng location;
+    private String desription;
     private String type;
     private List<String> tags;
 
+    public Pin() {
+
+    }
+
     public Pin(Campus campus, LatLng loc, String desc, String type, List<String> tags) {
         this.campus = campus;
-        this.loc = loc;
-        this.desc = desc;
+        this.location = loc;
+        this.desription = desc;
         this.type = type;
         this.tags = tags;
     }
 
     public LatLng getLocation() {
-        return loc;
+        return location;
     }
 
     public void setLocation(LatLng loc) {
-        this.loc = loc;
+        this.location = loc;
     }
 
     public String getDescription() {
-        return desc;
+        return desription;
     }
 
     public void setDescription(String desc) {
-        this.desc = desc;
+        this.desription = desc;
     }
 
     public Campus getCampus() {

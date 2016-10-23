@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +31,9 @@ public class CampusChooser extends AppCompatActivity {
 
     List<Campus> mCampuses;
     CampusArrayAdapter mAdapter;
+
+    private FirebaseDatabase database;
+    private DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +48,24 @@ public class CampusChooser extends AppCompatActivity {
         tv2.setTypeface(tf_i);
 
         mCampuses = new ArrayList<>();
-        mCampuses.add(new Campus("Harvard University", "Cambridge, MA 02138"));
-        mCampuses.add(new Campus("Massachusetts Institute of Technology", "77 Massachusetts Ave, Cambridge, MA 02139"));
-        mCampuses.add(new Campus("Georgia Institute of Technology", "North Ave NW, Atlanta, GA 30332"));
+//        mCampuses.add(new Campus("Harvard University", "Cambridge, MA 02138"));
+//        mCampuses.add(new Campus("Massachusetts Institute of Technology", "77 Massachusetts Ave, Cambridge, MA 02139"));
+//        mCampuses.add(new Campus("Georgia Institute of Technology", "North Ave NW, Atlanta, GA 30332"));
         mAdapter = new CampusArrayAdapter(this, mCampuses);
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference().child("Campuses");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dataChangeHandler(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Database", "Cancelled Connection");
+            }
+        });
 
         ListView lvCampuses = (ListView) findViewById(R.id.lvCampuses);
         lvCampuses.setAdapter(mAdapter);
@@ -60,6 +84,14 @@ public class CampusChooser extends AppCompatActivity {
         });
     }
 
+    public void dataChangeHandler(DataSnapshot dataSnapshot) {
+        for (DataSnapshot d : dataSnapshot.getChildren()) {
+            Campus c = d.getValue(Campus.class);
+            mCampuses.add(c);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
     public void addCampus(View view) {
         LayoutInflater lf = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         final View acView = lf.inflate(R.layout.add_campus_layout, null, false);
@@ -72,7 +104,9 @@ public class CampusChooser extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //                        TODO ADD TO LIST VIEW
-                        mCampuses.add(new Campus(cName.getText().toString(), cAddr.getText().toString()));
+                        Campus curr = new Campus(cName.getText().toString(), cAddr.getText().toString());
+                        ref.child(cName.getText().toString()).setValue(curr);
+                        mCampuses.add(curr);
                         mAdapter.notifyDataSetChanged();
                         dialog.cancel();
                     }

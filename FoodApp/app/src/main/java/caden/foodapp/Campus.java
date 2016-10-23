@@ -8,6 +8,10 @@ public class Campus {
     private String name;
     private String address;
 
+    public Campus() {
+
+    }
+
     public Campus(String name, String address) {
         this.name = name;
         this.address = address;
