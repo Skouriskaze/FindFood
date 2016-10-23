@@ -16,18 +16,19 @@ public class Pin {
     private String desription;
     private String type;
     private List<String> tags;
+    private long expiration;
 
     public Pin() {
-
     }
 
-    public Pin(Campus campus, LatLng loc, String desc, String type, List<String> tags) {
+    public Pin(Campus campus, LatLng loc, String desc, String type, List<String> tags, long expiration) {
         this.campus = campus;
         this.latitute = loc.latitude;
         this.longitude = loc.longitude;
         this.desription = desc;
         this.type = type;
         this.tags = tags;
+        this.expiration = expiration;
     }
 
     public double getLatitute() {
@@ -76,6 +77,14 @@ public class Pin {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public long getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(long expiration) {
+        this.expiration = expiration;
     }
 }
 

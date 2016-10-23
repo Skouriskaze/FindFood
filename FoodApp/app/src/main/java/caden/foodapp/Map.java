@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.fitness.result.DataSourceStatsResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -92,6 +93,7 @@ public class Map extends AppCompatActivity
 
     private FirebaseDatabase database;
     private DatabaseReference ref;
+    private DataSnapshot mDataSnapshot;
 
     private List<Pin> mPins;
     private List<String> mTypes;
@@ -138,6 +140,7 @@ public class Map extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //
+                mDataSnapshot = dataSnapshot;
                 onPinsChanged(dataSnapshot);
             }
             @Override
@@ -205,10 +208,26 @@ public class Map extends AppCompatActivity
 
     private void onPinsChanged(DataSnapshot dataSnapshot) {
         mPins.clear();
+        killExpiredPins(dataSnapshot);
         for (DataSnapshot d : dataSnapshot.getChildren()) {
-            mPins.add(d.getValue(Pin.class));
+            Pin p = d.getValue(Pin.class);
+            mPins.add(p);
         }
         drawAllMarkers();
+    }
+
+    private void killExpiredPins() {
+        killExpiredPins(mDataSnapshot);
+    }
+    private void killExpiredPins(DataSnapshot dataSnapshot) {
+        if (dataSnapshot != null) {
+            for (DataSnapshot d : dataSnapshot.getChildren()) {
+                Pin p = d.getValue(Pin.class);
+                if (p.getExpiration() < System.currentTimeMillis()) {
+                    ref.child(d.getKey()).removeValue();
+                }
+            }
+        }
     }
 
     private void drawAllMarkers() {
@@ -342,6 +361,7 @@ public class Map extends AppCompatActivity
     @Override
     public void onLocationChanged(Location location) {
         m_Location = location;
+        killExpiredPins();
         if (!isStartMarked) {
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
             //mMap.addMarker(new MarkerOptions().position(loc).title("Your Location"));
@@ -361,6 +381,7 @@ public class Map extends AppCompatActivity
         isStateDragging = !isStateDragging;
 
         updateTypes(isStateDragging);
+        killExpiredPins();
         drawAllMarkers();
 
         if (isStateDragging) {
@@ -380,6 +401,7 @@ public class Map extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int which) {
                             String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
                             String type = ((RadioButton) dialogView.findViewById(((RadioGroup) dialogView.findViewById(R.id.rgType)).getCheckedRadioButtonId())).getText().toString();
+                            int nDuration = 1;
                             LinearLayout llTags = (LinearLayout) dialogView.findViewById(R.id.llTags);
                             List<String> tags = new ArrayList<>();
                             String snip = "";
@@ -395,7 +417,7 @@ public class Map extends AppCompatActivity
                                 desc = "Food";
                             }
 
-                            Pin pin = new Pin(mCampus, camPos, desc, type, tags);
+                            Pin pin = new Pin(mCampus, camPos, desc, type, tags, System.currentTimeMillis() + 1000 * 60 * nDuration);
 
                             Marker mark = drawMarker(pin);
                             mark.setTag(pin);
@@ -532,6 +554,7 @@ public class Map extends AppCompatActivity
         }
 
         updateTypes();
+        killExpiredPins();
         drawAllMarkers();
     }
 }
