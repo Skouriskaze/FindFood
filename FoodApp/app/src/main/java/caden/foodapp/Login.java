@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -52,6 +53,11 @@ public class Login extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         signinloading = (TextView) findViewById(R.id.signintext);
+
+//        Button sulb = (Button) findViewById(R.id.signUpLinkButton);
+//        sulb.setTypeface(tf);
+//        Button esb = (Button) findViewById(R.id.email_sign_in_button);
+//        esb.setTypeface(tf);
 
         pswfield.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

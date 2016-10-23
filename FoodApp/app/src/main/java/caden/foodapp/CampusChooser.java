@@ -1,16 +1,20 @@
 package caden.foodapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,6 +56,29 @@ public class CampusChooser extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void addCampus(View view) {
+        LayoutInflater lf = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View acView = lf.inflate(R.layout.add_campus_layout, null, false);
+        final AutoCompleteTextView cName = (AutoCompleteTextView) acView.findViewById(R.id.cname);
+        final AutoCompleteTextView cAddr = (AutoCompleteTextView) acView.findViewById(R.id.caddr);
+
+        new AlertDialog.Builder(this).setView(acView)
+                .setTitle("Add New Campus")
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        TODO ADD TO LIST VIEW
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
     }
 
     public class CampusArrayAdapter extends ArrayAdapter<Campus> {

@@ -53,7 +53,7 @@
         <activity
             android:name=".CampusChooser"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.CampusChooser">
         </activity>
     </application>
 

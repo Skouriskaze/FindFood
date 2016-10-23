@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,35 +10,51 @@
     android:orientation="vertical"
     android:background="@color/colorPrimary">
 
-    <TextView
-        android:text="Hungry Holmes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/appLbl"
-        android:textSize="64sp"
-        android:textColor="#fff"
-        android:textAlignment="center"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="32dp"/>
-
-    <TextView
-        android:text="Free Food Detective"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="wrap_content"
-        android:id="@+id/ffd"
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:text="Hungry Holmes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appLbl"
+            android:textSize="58sp"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="32dp"/>
+
+        <TextView
+            android:text="Free Food Detective"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/ffd"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="48dp"/>
 
         <ListView
             android:id="@+id/lvCampuses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+    </LinearLayout>
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_new_campus"
+        android:layout_gravity="bottom"
+        android:onClick="addCampus"/>
+
+</android.support.design.widget.CoordinatorLayout>
