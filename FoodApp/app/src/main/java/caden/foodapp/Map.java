@@ -272,6 +272,7 @@ public class Map extends AppCompatActivity
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
+                killExpiredPins();
                 if (isStateDragging) {
                     if (mCamMarker != null) {
                         mCamMarker.setPosition(mMap.getCameraPosition().target);
