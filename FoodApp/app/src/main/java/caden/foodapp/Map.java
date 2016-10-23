@@ -314,6 +314,7 @@ public class Map extends AppCompatActivity
                 return;
             }
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
         }
     }
 
