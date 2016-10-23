@@ -1,31 +1,31 @@
 package caden.foodapp;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -100,13 +100,8 @@ public class Map extends AppCompatActivity
         }
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        String[] arra = new String[10];
-        for (int i = 0; i < 10; i++) arra[i] = "Comment " + i;
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item_food, arra);
-
-        ListView lvComments = (ListView) findViewById(R.id.lvComments);
-        lvComments.setAdapter(adapter);
+        RadioButton rbAllDay = (RadioButton) findViewById(R.id.rbAllDay);
+        rbAllDay.setChecked(true);
 
         mCampus = new Campus(getIntent().getStringExtra("Name"), getIntent().getStringExtra("Address"));
         if (!mCampus.getName().equals("") && mCampus.getName() != null) {
@@ -119,7 +114,8 @@ public class Map extends AppCompatActivity
             }
 
             Address address = addressList.get(0);
-            mUni = new LatLng(address.getLatitude(), address.getLongitude());
+            if (address != null)
+                mUni = new LatLng(address.getLatitude(), address.getLongitude());
         }
 
         if (checkPlayServices()) {
@@ -193,9 +189,6 @@ public class Map extends AppCompatActivity
                 }
             }
         });
-        //updateLocation();
-        //m_Location = getLocation();
-
 
     }
 
@@ -251,42 +244,12 @@ public class Map extends AppCompatActivity
                     }
                     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
                     mMap.setMyLocationEnabled(true);
-                    //updateLocation();
-                    //m_Location = getLocation();
                 } else {
                     Log.e("Map", "Permission Denied");
                 }
             }
         }
     }
-
-    /*
-    private void updateLocation() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-            Log.d("Map", "Location enabled");
-        } else {
-            ActivityCompat.requestPermissions(Map.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    } */
-
-    /*
-    public Location getLocation() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Map.this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-        m_LocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = m_LocationManager.getBestProvider(criteria, true);
-        Location location = m_LocationManager.getLastKnownLocation(bestProvider);
-        Location loc2 = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        return loc2;
-    } */
 
     protected void startLocationUpdate() {
         mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(10000).setFastestInterval(2000);
@@ -322,26 +285,6 @@ public class Map extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_add, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_add:
-//
-////                addDialog();
-//
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
     public void addDialog(View view) {
         Log.d("Action", "Marker to be added");
         isStateDragging = !isStateDragging;
@@ -363,8 +306,15 @@ public class Map extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int which) {
                             String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
                             String snip = ((EditText) dialogView.findViewById(R.id.snippet)).getText().toString();
-                            Marker mark = mMap.addMarker(new MarkerOptions().position(camPos).title(desc).snippet(snip));
+                            if (desc.trim().equals("")) {
+                                desc = "Food";
+                            }
+                            Marker mark = mMap.addMarker(new MarkerOptions().position(camPos).title(desc));
+                            if (!snip.trim().equals("")) {
+                                mark.setSnippet(snip);
+                            }
                             mark.setTag(mCampus);
+                            mark.showInfoWindow();
                             mCamMarker.remove();
 //                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
                         }
@@ -379,27 +329,43 @@ public class Map extends AppCompatActivity
 
             builder.show();
         }
-        /*
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final LayoutInflater layoutInflater = this.getLayoutInflater();
-        final View dialogView = layoutInflater.inflate(R.layout.dialog_marker, null, false);
-        final LatLng camPos = mMap.getCameraPosition().target;
-        builder.setView(dialogView)
-                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
-                        mMap.addMarker(new MarkerOptions().position(camPos).title(desc));
-//                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
 
-        builder.show(); */
+    }
+
+    public void onBeginClick(View view) {
+        final EditText etBegin = (EditText) findViewById(R.id.etBeginTime);
+        final RadioButton rbFrom = (RadioButton) findViewById(R.id.rbFrom);
+        TimePickerDialog tpd = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                rbFrom.setChecked(true);
+                StringBuilder sb = new StringBuilder();
+                sb.append(hourOfDay % 12 == 0 ? 12 : hourOfDay % 12);
+                sb.append(":");
+                sb.append(String.format("%1$02d", minute));
+                sb.append(hourOfDay > 11 ? " PM" : " AM");
+                etBegin.setText(sb.toString());
+            }
+        }, 0, 0, false);
+        tpd.show();
+    }
+
+    public void onEndClick(View view) {
+
+        final EditText etEnd = (EditText) findViewById(R.id.etEndTime);
+        final RadioButton rbFrom = (RadioButton) findViewById(R.id.rbFrom);
+        TimePickerDialog tpd = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                rbFrom.setChecked(true);
+                StringBuilder sb = new StringBuilder();
+                sb.append(hourOfDay % 12 == 0 ? 12 : hourOfDay % 12);
+                sb.append(":");
+                sb.append(String.format("%1$02d", minute));
+                sb.append(hourOfDay > 11 ? " PM" : " AM");
+                etEnd.setText(sb.toString());
+            }
+        }, 0, 0, false);
+        tpd.show();
     }
 }
