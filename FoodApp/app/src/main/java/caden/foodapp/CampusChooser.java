@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +21,9 @@ import java.util.List;
 
 public class CampusChooser extends AppCompatActivity {
 
+    List<Campus> mCampuses;
+    CampusArrayAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,19 +36,19 @@ public class CampusChooser extends AppCompatActivity {
         tv1.setTypeface(tf);
         tv2.setTypeface(tf_i);
 
-        final List<Campus> campuses = new ArrayList<>();
-        campuses.add(new Campus("Harvard University", "Cambridge, MA 02138"));
-        campuses.add(new Campus("Massachusetts Institute of Technology", "77 Massachusetts Ave, Cambridge, MA 02139"));
-        campuses.add(new Campus("Georgia Institute of Technology", "North Ave NW, Atlanta, GA 30332"));
-        CampusArrayAdapter adapter = new CampusArrayAdapter(this, campuses);
+        mCampuses = new ArrayList<>();
+        mCampuses.add(new Campus("Harvard University", "Cambridge, MA 02138"));
+        mCampuses.add(new Campus("Massachusetts Institute of Technology", "77 Massachusetts Ave, Cambridge, MA 02139"));
+        mCampuses.add(new Campus("Georgia Institute of Technology", "North Ave NW, Atlanta, GA 30332"));
+        mAdapter = new CampusArrayAdapter(this, mCampuses);
 
         ListView lvCampuses = (ListView) findViewById(R.id.lvCampuses);
-        lvCampuses.setAdapter(adapter);
+        lvCampuses.setAdapter(mAdapter);
         final Context ctx = this;
         lvCampuses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Campus campus= campuses.get(position);
+                Campus campus= mCampuses.get(position);
                 Intent intent = new Intent(ctx, Map.class);
 
                 intent.putExtra("Name", campus.getName());
@@ -70,6 +71,8 @@ public class CampusChooser extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //                        TODO ADD TO LIST VIEW
+                        mCampuses.add(new Campus(cName.getText().toString(), cAddr.getText().toString()));
+                        mAdapter.notifyDataSetChanged();
                         dialog.cancel();
                     }
                 })
