@@ -93,6 +93,7 @@ public class Map extends AppCompatActivity
     private DatabaseReference ref;
 
     private List<Pin> mPins;
+    private List<String> mTypes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,14 @@ public class Map extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
+        mTypes = new ArrayList<>();
+        LinearLayout llFilter = (LinearLayout) findViewById(R.id.llFilters);
+        for (int i = 0; i < llFilter.getChildCount(); i++) {
+            View view = llFilter.getChildAt(i);
+            if (view instanceof CheckBox) {
+
+            }
+        }
 
         mCampus = new Campus(getIntent().getStringExtra("Name"), getIntent().getStringExtra("Address"));
         if (!mCampus.getName().equals("") && mCampus.getName() != null) {
@@ -134,11 +143,7 @@ public class Map extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //
-                mPins.clear();
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    mPins.add(d.getValue(Pin.class));
-                }
-                drawAllMarkers();
+                onPinsChanged(dataSnapshot);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -182,6 +187,14 @@ public class Map extends AppCompatActivity
         } else {
             Toast.makeText(mContext, "Location not supported in this device", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void onPinsChanged(DataSnapshot dataSnapshot) {
+        mPins.clear();
+        for (DataSnapshot d : dataSnapshot.getChildren()) {
+            mPins.add(d.getValue(Pin.class));
+        }
+        drawAllMarkers();
     }
 
     private void drawAllMarkers() {
