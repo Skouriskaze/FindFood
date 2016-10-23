@@ -34,7 +34,7 @@ public class CampusChooser extends AppCompatActivity {
         final List<Campus> campuses = new ArrayList<>();
         campuses.add(new Campus("Harvard University", "Cambridge, MA 02138"));
         campuses.add(new Campus("Massachusetts Institute of Technology", "77 Massachusetts Ave, Cambridge, MA 02139"));
-        campuses.add(new Campus("Georgia Institute of Technology", "Something"));
+        campuses.add(new Campus("Georgia Institute of Technology", "North Ave NW, Atlanta, GA 30332"));
         CampusArrayAdapter adapter = new CampusArrayAdapter(this, campuses);
 
         ListView lvCampuses = (ListView) findViewById(R.id.lvCampuses);

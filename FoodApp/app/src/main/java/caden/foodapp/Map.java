@@ -1,13 +1,12 @@
 package caden.foodapp;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
@@ -16,22 +15,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -80,9 +70,10 @@ public class Map extends AppCompatActivity
 
     private Campus mCampus;
     private LatLng mUni;
+    private Marker mCamMarker;
 
     private FloatingActionButton fab;
-    private boolean isStateOne;
+    private boolean isStateDragging;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +86,7 @@ public class Map extends AppCompatActivity
 
         mContext = this;
         isStartMarked = false;
+        isStateDragging = false;
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -185,6 +177,16 @@ public class Map extends AppCompatActivity
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37, -96)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mUni, 15));
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                if (isStateDragging) {
+                    if (mCamMarker != null) {
+                        mCamMarker.setPosition(mMap.getCameraPosition().target);
+                    }
+                }
+            }
+        });
         //updateLocation();
         //m_Location = getLocation();
 
@@ -335,8 +337,14 @@ public class Map extends AppCompatActivity
 
     public void addDialog(View view) {
         Log.d("Action", "Marker to be added");
-        final LatLng loc = new LatLng(m_Location.getLatitude(), m_Location.getLongitude());
+        isStateDragging = !isStateDragging;
 
+        if (isStateDragging) {
+            mCamMarker = mMap.addMarker(new MarkerOptions().title("Nothing").snippet("Snippet").position(mMap.getCameraPosition().target));
+        } else {
+            mCamMarker.remove();
+        }
+        /*
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater layoutInflater = this.getLayoutInflater();
         final View dialogView = layoutInflater.inflate(R.layout.dialog_marker, null, false);
@@ -357,6 +365,6 @@ public class Map extends AppCompatActivity
                     }
                 });
 
-        builder.show();
+        builder.show(); */
     }
 }
