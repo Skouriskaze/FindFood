@@ -27,6 +27,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -47,6 +49,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -307,23 +310,31 @@ public class Map extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
+                            String type = ((RadioButton) findViewById(((RadioGroup) findViewById(R.id.rgType)).getCheckedRadioButtonId())).getText().toString();
                             LinearLayout llTags = (LinearLayout) dialogView.findViewById(R.id.llTags);
+                            List<String> tags = new ArrayList<>();
                             String snip = "";
                             for (int i = 0; i < llTags.getChildCount(); i++) {
                                 View cb = llTags.getChildAt(i);
                                 if (cb instanceof CheckBox && ((CheckBox) cb).isChecked()) {
                                     snip += (snip.equals("") ? "" : ", ") + ((CheckBox) cb).getText();
+                                    tags.add(((CheckBox) cb).getText().toString());
                                 }
                             }
                             //String snip = ((EditText) dialogView.findViewById(R.id.snippet)).getText().toString();
                             if (desc.trim().equals("")) {
                                 desc = "Food";
                             }
-                            Marker mark = mMap.addMarker(new MarkerOptions().position(camPos).title(desc));
+                            Marker mark = mMap.addMarker(new MarkerOptions()
+                                    .position(camPos).title(desc)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.cake)));
                             if (!snip.trim().equals("")) {
                                 mark.setSnippet(snip);
                             }
-                            mark.setTag(mCampus);
+
+                            Pin pin = new Pin(mCampus, camPos, desc, type, tags);
+                            mark.setTag(pin);
+
                             mark.showInfoWindow();
                             mCamMarker.remove();
 //                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
