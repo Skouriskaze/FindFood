@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B3ffffff">
+    android:background="#BFffa726">
 
     <TextView
         android:layout_marginTop="8dp"
@@ -10,6 +10,7 @@
         android:layout_marginEnd="12dp"
         android:id="@+id/tvCampusName"
         android:hint="Campus Name"
+        android:textColor="#CCffffff"
         android:textSize="22sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -19,6 +20,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
         android:id="@+id/tvCampusAddress"
+        android:textColor="#99000000"
         android:hint="Campus Address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
