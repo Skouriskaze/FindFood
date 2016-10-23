@@ -19,8 +19,10 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -342,7 +344,31 @@ public class Map extends AppCompatActivity
         if (isStateDragging) {
             mCamMarker = mMap.addMarker(new MarkerOptions().title("Nothing").snippet("Snippet").position(mMap.getCameraPosition().target));
         } else {
-            mCamMarker.remove();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final LayoutInflater layoutInflater = this.getLayoutInflater();
+            final View dialogView = layoutInflater.inflate(R.layout.dialog_marker, null, false);
+            final LatLng camPos = mMap.getCameraPosition().target;
+            builder.setView(dialogView)
+                    .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
+                            String snip = ((EditText) dialogView.findViewById(R.id.snippet)).getText().toString();
+                            Marker mark = mMap.addMarker(new MarkerOptions().position(camPos).title(desc).snippet(snip));
+                            mark.setTag(mCampus);
+                            mCamMarker.remove();
+//                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mCamMarker.remove();
+                            dialog.cancel();
+                        }
+                    });
+
+            builder.show();
         }
         /*
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
