@@ -55,7 +55,7 @@ public class CampusChooser extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference().child("Campuses");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataChangeHandler(dataSnapshot);
@@ -85,6 +85,7 @@ public class CampusChooser extends AppCompatActivity {
     }
 
     public void dataChangeHandler(DataSnapshot dataSnapshot) {
+        mCampuses.clear();
         for (DataSnapshot d : dataSnapshot.getChildren()) {
             Campus c = d.getValue(Campus.class);
             mCampuses.add(c);
