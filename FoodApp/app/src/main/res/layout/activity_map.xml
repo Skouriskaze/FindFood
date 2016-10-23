@@ -25,7 +25,6 @@
 
         <android.support.v7.widget.CardView
             android:layout_weight="3"
-            android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -37,50 +36,59 @@
 
                 <TextView
                     android:text="Filters:"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
                     <CheckBox
                         android:id="@+id/cbCake"
-                        android:layout_weight="1"
                         android:button="@drawable/cakep"
                         android:checked="true"
                         android:onClick="onChecked"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <CheckBox
                         android:id="@+id/cbChips"
-                        android:layout_weight="1"
                         android:button="@drawable/chipsp"
                         android:checked="true"
                         android:onClick="onChecked"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <CheckBox
                         android:id="@+id/cbPizza"
-                        android:layout_weight="1"
                         android:button="@drawable/pizzap"
                         android:checked="true"
                         android:onClick="onChecked"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <CheckBox
                         android:id="@+id/cbAsterisk"
-                        android:layout_weight="1"
                         android:button="@drawable/asteriskp"
                         android:checked="true"
                         android:onClick="onChecked"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"/>
                 </LinearLayout>
 
                 <TextView
                     android:text="Notification Settings:"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"/>
 
                 <RadioGroup
                     android:layout_width="match_parent"
@@ -102,6 +110,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
+                            android:gravity="center"
                             android:id="@+id/etBeginTime"
                             android:hint="12:00 AM"
                             android:focusable="false"
@@ -115,6 +124,7 @@
                             android:layout_height="wrap_content" />
                         <EditText
                             android:id="@+id/etEndTime"
+                            android:gravity="center"
                             android:hint="12:00 AM"
                             android:focusable="false"
                             android:onClick="onEndClick"
