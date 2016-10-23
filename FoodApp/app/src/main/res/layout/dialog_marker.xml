@@ -134,6 +134,16 @@
                 android:layout_height="wrap_content" />
 
             <NumberPicker
+                android:id="@+id/npDurationHours"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="hours "
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <NumberPicker
                 android:id="@+id/npDuration"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"

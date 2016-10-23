@@ -398,16 +398,22 @@ public class Map extends AppCompatActivity
             final View dialogView = layoutInflater.inflate(R.layout.dialog_marker, null, false);
             final LatLng camPos = mMap.getCameraPosition().target;
             final NumberPicker np = (NumberPicker) dialogView.findViewById(R.id.npDuration);
-            np.setMinValue(15);
-            np.setMaxValue(240);
-            np.setValue(30);
+            final NumberPicker npH = (NumberPicker) dialogView.findViewById(R.id.npDurationHours);
+            np.setMinValue(0);
+            np.setMaxValue(60);
+            np.setValue(0);
+            npH.setMinValue(0);
+            npH.setMaxValue(6);
+            npH.setValue(1);
             builder.setView(dialogView)
                     .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
                             String type = ((RadioButton) dialogView.findViewById(((RadioGroup) dialogView.findViewById(R.id.rgType)).getCheckedRadioButtonId())).getText().toString();
-                            int nDuration = np.getValue();
+                            int nMinutes= np.getValue();
+                            int nHours = npH.getValue();
+                            int nDuration = 60 * nHours + nMinutes;
                             LinearLayout llTags = (LinearLayout) dialogView.findViewById(R.id.llTags);
                             List<String> tags = new ArrayList<>();
                             String snip = "";
