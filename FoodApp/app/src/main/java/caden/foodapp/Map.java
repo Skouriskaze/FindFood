@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
@@ -396,13 +397,17 @@ public class Map extends AppCompatActivity
             final LayoutInflater layoutInflater = this.getLayoutInflater();
             final View dialogView = layoutInflater.inflate(R.layout.dialog_marker, null, false);
             final LatLng camPos = mMap.getCameraPosition().target;
+            final NumberPicker np = (NumberPicker) dialogView.findViewById(R.id.npDuration);
+            np.setMinValue(15);
+            np.setValue(30);
+            np.setMaxValue(240);
             builder.setView(dialogView)
                     .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
                             String type = ((RadioButton) dialogView.findViewById(((RadioGroup) dialogView.findViewById(R.id.rgType)).getCheckedRadioButtonId())).getText().toString();
-                            int nDuration = 1;
+                            int nDuration = np.getValue();
                             LinearLayout llTags = (LinearLayout) dialogView.findViewById(R.id.llTags);
                             List<String> tags = new ArrayList<>();
                             String snip = "";
