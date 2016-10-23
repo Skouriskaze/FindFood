@@ -110,30 +110,6 @@ public class Map extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
-        database = FirebaseDatabase.getInstance();
-        ref = database.getReference().child("Pins").child(mCampus.getName());
-        mPins = new ArrayList<>();
-
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //
-                Log.d("Database", dataSnapshot.toString());
-                int x = 1+1;
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("Database", "Cancelled???");
-            }
-        });
-
-        if (mUser != null) {
-            Log.d("FIREBASE", mUser.getEmail());
-        }
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        RadioButton rbAllDay = (RadioButton) findViewById(R.id.rbAllDay);
-        rbAllDay.setChecked(true);
 
         mCampus = new Campus(getIntent().getStringExtra("Name"), getIntent().getStringExtra("Address"));
         if (!mCampus.getName().equals("") && mCampus.getName() != null) {
@@ -149,6 +125,34 @@ public class Map extends AppCompatActivity
             if (address != null)
                 mUni = new LatLng(address.getLatitude(), address.getLongitude());
         }
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference().child("Pins").child(mCampus.getName());
+        mPins = new ArrayList<>();
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //
+                mPins.clear();
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    mPins.add(d.getValue(Pin.class));
+                }
+                drawAllMarkers();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Database", "Cancelled???");
+            }
+        });
+
+        if (mUser != null) {
+            Log.d("FIREBASE", mUser.getEmail());
+        }
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        RadioButton rbAllDay = (RadioButton) findViewById(R.id.rbAllDay);
+        rbAllDay.setChecked(true);
 
         if (checkPlayServices()) {
             // If this check succeeds, proceed with normal processing.
@@ -177,6 +181,13 @@ public class Map extends AppCompatActivity
             buildGoogleApiClient();
         } else {
             Toast.makeText(mContext, "Location not supported in this device", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void drawAllMarkers() {
+        mMap.clear();
+        for (Pin p : mPins) {
+            drawMarker(p);
         }
     }
 
@@ -352,35 +363,14 @@ public class Map extends AppCompatActivity
                             if (desc.trim().equals("")) {
                                 desc = "Food";
                             }
-                            Marker mark = mMap.addMarker(new MarkerOptions()
-                                    .position(camPos).title(desc));
-
-                                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.cake)));
-                            switch (type) {
-                                case "Desserts":
-                                    mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.cakes));
-                                    break;
-                                case "Snacks":
-                                    mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.chipss));
-                                    break;
-                                case "Meals":
-                                    mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.pizzas));
-                                    break;
-                                case "Other":
-                                    mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.asterisks));
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if (!snip.trim().equals("")) {
-                                mark.setSnippet(snip);
-                            }
 
                             Pin pin = new Pin(mCampus, camPos, desc, type, tags);
+
+                            Marker mark = drawMarker(pin);
                             mark.setTag(pin);
 
                             mPins.add(pin);
-                            ref.child(mCampus.getName()).setValue(mPins);
+                            ref.push().setValue(pin);
 
                             mark.showInfoWindow();
                             mCamMarker.remove();
@@ -398,6 +388,45 @@ public class Map extends AppCompatActivity
             builder.show();
         }
 
+    }
+
+    private Marker drawMarker(Pin p) {
+        LatLng camPos = new LatLng(p.getLatitute(), p.getLongitude());
+        String desc = p.getDescription();
+        String type = p.getType();
+        List<String> tags = p.getTags();
+        String snip = "";
+        if (null != tags) {
+            for (String s : tags) {
+                snip += (snip.equals("") ? "" : ", ") + (s);
+            }
+        }
+
+        Marker mark = mMap.addMarker(new MarkerOptions()
+                .position(camPos).title(desc));
+
+        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.cake)));
+        switch (type) {
+            case "Desserts":
+                mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.cakes));
+                break;
+            case "Snacks":
+                mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.chipss));
+                break;
+            case "Meals":
+                mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.pizzas));
+                break;
+            case "Other":
+                mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.asterisks));
+                break;
+            default:
+                break;
+        }
+        if (!snip.trim().equals("")) {
+            mark.setSnippet(snip);
+        }
+
+        return mark;
     }
 
     public void onBeginClick(View view) {
