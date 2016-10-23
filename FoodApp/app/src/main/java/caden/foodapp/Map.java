@@ -399,8 +399,8 @@ public class Map extends AppCompatActivity
             final LatLng camPos = mMap.getCameraPosition().target;
             final NumberPicker np = (NumberPicker) dialogView.findViewById(R.id.npDuration);
             np.setMinValue(15);
-            np.setValue(30);
             np.setMaxValue(240);
+            np.setValue(30);
             builder.setView(dialogView)
                     .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                         @Override
