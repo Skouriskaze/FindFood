@@ -142,11 +142,10 @@
     <!--<ImageView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/ic_logo"-->
+        <!--android:src="@drawable/logo.png"-->
         <!--android:minWidth="150dp"-->
         <!--android:minHeight="150dp"-->
         <!--app:layout_constraintRight_toRightOf="@+id/appLbl"-->
         <!--tools:layout_editor_absoluteY="0dp"/>-->
-
 
 </android.support.constraint.ConstraintLayout>
