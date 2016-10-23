@@ -2,6 +2,7 @@ package caden.foodapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,13 @@ public class CampusChooser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campus_chooser);
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/economica.otf");
+        Typeface tf_i = Typeface.createFromAsset(getAssets(), "fonts/economica_italic.otf");
+        TextView tv1 = (TextView) findViewById(R.id.appLbl);
+        TextView tv2 = (TextView) findViewById(R.id.ffd);
+        tv1.setTypeface(tf);
+        tv2.setTypeface(tf_i);
 
         final List<Campus> campuses = new ArrayList<>();
         campuses.add(new Campus("Harvard University", "Cambridge, MA 02138"));
