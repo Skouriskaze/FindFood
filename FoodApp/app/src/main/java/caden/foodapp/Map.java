@@ -23,7 +23,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -305,7 +307,15 @@ public class Map extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
-                            String snip = ((EditText) dialogView.findViewById(R.id.snippet)).getText().toString();
+                            LinearLayout llTags = (LinearLayout) dialogView.findViewById(R.id.llTags);
+                            String snip = "";
+                            for (int i = 0; i < llTags.getChildCount(); i++) {
+                                View cb = llTags.getChildAt(i);
+                                if (cb instanceof CheckBox && ((CheckBox) cb).isChecked()) {
+                                    snip += (snip.equals("") ? "" : ", ") + ((CheckBox) cb).getText();
+                                }
+                            }
+                            //String snip = ((EditText) dialogView.findViewById(R.id.snippet)).getText().toString();
                             if (desc.trim().equals("")) {
                                 desc = "Food";
                             }
