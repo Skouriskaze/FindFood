@@ -35,21 +35,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="24dp"/>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:focusable="true"
-        android:clickable="true">
-
         <ListView
             android:id="@+id/lvCampuses"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-    </android.support.v7.widget.CardView>
 
 
 </LinearLayout>

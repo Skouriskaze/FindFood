@@ -68,8 +68,13 @@ public class CampusChooser extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_campus, parent, false);
             }
 
+            Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/tenor.ttf");
+
             TextView tvName = (TextView) convertView.findViewById(R.id.tvCampusName);
             TextView tvAddress = (TextView) convertView.findViewById(R.id.tvCampusAddress);
+
+            tvName.setTypeface(tf);
+            tvAddress.setTypeface(tf);
 
             tvName.setText(curr.getName());
             tvAddress.setText(curr.getAddress());
