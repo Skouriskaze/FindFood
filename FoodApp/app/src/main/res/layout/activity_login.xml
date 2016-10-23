@@ -112,7 +112,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpLinkButton"
-        />
+        android:layout_marginTop="64dp"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -121,9 +121,9 @@
         android:backgroundTint="#fff"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/signUpLinkButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        />
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"/>
 
     <TextView
         android:text="Free Food Detective"
