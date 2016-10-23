@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -96,6 +98,8 @@ public class Map extends AppCompatActivity
         if (mUser != null) {
             Log.d("FIREBASE", mUser.getEmail());
         }
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         String[] arra = new String[10];
         for (int i = 0; i < 10; i++) arra[i] = "Comment " + i;
@@ -344,7 +348,11 @@ public class Map extends AppCompatActivity
 
         if (isStateDragging) {
             mCamMarker = mMap.addMarker(new MarkerOptions().title("Nothing").snippet("Snippet").position(mMap.getCameraPosition().target));
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#03A9F4")));
+            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_check));
         } else {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E91E63")));
+            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             final LayoutInflater layoutInflater = this.getLayoutInflater();
             final View dialogView = layoutInflater.inflate(R.layout.dialog_marker, null, false);
