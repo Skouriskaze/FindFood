@@ -52,6 +52,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,13 +113,7 @@ public class Map extends AppCompatActivity
         mUser = mAuth.getCurrentUser();
 
         mTypes = new ArrayList<>();
-        LinearLayout llFilter = (LinearLayout) findViewById(R.id.llFilters);
-        for (int i = 0; i < llFilter.getChildCount(); i++) {
-            View view = llFilter.getChildAt(i);
-            if (view instanceof CheckBox) {
-
-            }
-        }
+        updateTypes();
 
         mCampus = new Campus(getIntent().getStringExtra("Name"), getIntent().getStringExtra("Address"));
         if (!mCampus.getName().equals("") && mCampus.getName() != null) {
@@ -189,6 +184,25 @@ public class Map extends AppCompatActivity
         }
     }
 
+    private void updateTypes() {
+        updateTypes(false);
+    }
+    private void updateTypes(boolean ignore) {
+        mTypes.clear();
+        LinearLayout llFilter = (LinearLayout) findViewById(R.id.llFilters);
+        for (int i = 0; i < llFilter.getChildCount(); i++) {
+            View view = llFilter.getChildAt(i);
+            if (view instanceof CheckBox) {
+                CheckBox cb = (CheckBox) view;
+                if (!ignore && cb.isChecked()) {
+                    mTypes.add(cb.getTag().toString());
+                } else if (ignore) {
+                    mTypes.add(cb.getTag().toString());
+                }
+            }
+        }
+    }
+
     private void onPinsChanged(DataSnapshot dataSnapshot) {
         mPins.clear();
         for (DataSnapshot d : dataSnapshot.getChildren()) {
@@ -200,7 +214,8 @@ public class Map extends AppCompatActivity
     private void drawAllMarkers() {
         mMap.clear();
         for (Pin p : mPins) {
-            drawMarker(p);
+            if (mTypes.contains(p.getType()))
+                drawMarker(p);
         }
     }
 
@@ -344,6 +359,9 @@ public class Map extends AppCompatActivity
     public void addDialog(View view) {
         Log.d("Action", "Marker to be added");
         isStateDragging = !isStateDragging;
+
+        updateTypes(isStateDragging);
+        drawAllMarkers();
 
         if (isStateDragging) {
             mCamMarker = mMap.addMarker(new MarkerOptions().title("Nothing").snippet("Snippet").position(mMap.getCameraPosition().target));
@@ -512,5 +530,8 @@ public class Map extends AppCompatActivity
                 }
                 break;
         }
+
+        updateTypes();
+        drawAllMarkers();
     }
 }

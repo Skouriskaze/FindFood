@@ -58,6 +58,7 @@
                         android:layout_marginBottom="8dp">
                         <CheckBox
                             android:id="@+id/cbCake"
+                            android:tag="Desserts"
                             android:button="@drawable/cakep"
                             android:checked="true"
                             android:onClick="onChecked"
@@ -67,6 +68,7 @@
                             android:layout_height="wrap_content" />
                         <CheckBox
                             android:id="@+id/cbChips"
+                            android:tag="Snacks"
                             android:button="@drawable/chipsp"
                             android:checked="true"
                             android:onClick="onChecked"
@@ -76,6 +78,7 @@
                             android:layout_height="wrap_content" />
                         <CheckBox
                             android:id="@+id/cbPizza"
+                            android:tag="Meals"
                             android:button="@drawable/pizzap"
                             android:checked="true"
                             android:onClick="onChecked"
@@ -85,6 +88,7 @@
                             android:layout_height="wrap_content" />
                         <CheckBox
                             android:id="@+id/cbAsterisk"
+                            android:tag="Other"
                             android:button="@drawable/asteriskp"
                             android:checked="true"
                             android:onClick="onChecked"
