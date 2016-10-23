@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -47,6 +49,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+import java.util.List;
+
 
 public class Map extends AppCompatActivity
         implements
@@ -73,6 +78,7 @@ public class Map extends AppCompatActivity
     private FirebaseUser mUser = null;
 
     private Campus mCampus;
+    private LatLng mUni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +108,18 @@ public class Map extends AppCompatActivity
 
         mCampus = new Campus(getIntent().getStringExtra("Name"), getIntent().getStringExtra("Address"));
         if (!mCampus.getName().equals("") && mCampus.getName() != null) {
-            
+            Geocoder geocoder = new Geocoder(this);
+            List<Address> addressList = null;
+            try {
+                addressList = geocoder.getFromLocationName(mCampus.getName(), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Address address = addressList.get(0);
+            mUni = new LatLng(address.getLatitude(), address.getLongitude());
         }
 
-        Toast.makeText(this, mCampus.toString(), Toast.LENGTH_SHORT).show();
-
-        
         if (checkPlayServices()) {
             // If this check succeeds, proceed with normal processing.
             // Otherwise, prompt user to get valid Play Services APK.
@@ -166,6 +178,9 @@ public class Map extends AppCompatActivity
         mMap.setOnMarkerClickListener(this);
 
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37, -96)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mUni, 15));
         //updateLocation();
         //m_Location = getLocation();
 
@@ -284,7 +299,7 @@ public class Map extends AppCompatActivity
         if (!isStartMarked) {
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
             //mMap.addMarker(new MarkerOptions().position(loc).title("Your Location"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+            //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
             isStartMarked = true;
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
@@ -321,13 +336,14 @@ public class Map extends AppCompatActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater layoutInflater = this.getLayoutInflater();
         final View dialogView = layoutInflater.inflate(R.layout.dialog_marker, null, false);
+        final LatLng camPos = mMap.getCameraPosition().target;
         builder.setView(dialogView)
                 .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
-                        mMap.addMarker(new MarkerOptions().position(loc).title(desc));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+                        mMap.addMarker(new MarkerOptions().position(camPos).title(desc));
+//                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
