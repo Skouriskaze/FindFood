@@ -44,31 +44,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <CheckBox
-                        android:id="@+id/cbFirst"
+                        android:id="@+id/cbCake"
                         android:layout_weight="1"
-                        android:button="@drawable/cake"
+                        android:button="@drawable/cakep"
                         android:checked="true"
+                        android:onClick="onChecked"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <CheckBox
-                        android:id="@+id/cbSecond"
+                        android:id="@+id/cbChips"
                         android:layout_weight="1"
-                        android:button="@drawable/chips"
+                        android:button="@drawable/chipsp"
                         android:checked="true"
+                        android:onClick="onChecked"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <CheckBox
-                        android:id="@+id/cbThird"
+                        android:id="@+id/cbPizza"
                         android:layout_weight="1"
-                        android:button="@drawable/pizza"
+                        android:button="@drawable/pizzap"
                         android:checked="true"
+                        android:onClick="onChecked"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <CheckBox
-                        android:id="@+id/cbFourth"
+                        android:id="@+id/cbAsterisk"
                         android:layout_weight="1"
-                        android:button="@drawable/asterisk"
+                        android:button="@drawable/asteriskp"
                         android:checked="true"
+                        android:onClick="onChecked"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>

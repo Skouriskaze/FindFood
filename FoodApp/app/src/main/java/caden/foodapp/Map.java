@@ -310,7 +310,7 @@ public class Map extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String desc = ((EditText) dialogView.findViewById(R.id.desc)).getText().toString();
-                            String type = ((RadioButton) findViewById(((RadioGroup) findViewById(R.id.rgType)).getCheckedRadioButtonId())).getText().toString();
+                            String type = ((RadioButton) dialogView.findViewById(((RadioGroup) dialogView.findViewById(R.id.rgType)).getCheckedRadioButtonId())).getText().toString();
                             LinearLayout llTags = (LinearLayout) dialogView.findViewById(R.id.llTags);
                             List<String> tags = new ArrayList<>();
                             String snip = "";
@@ -326,8 +326,25 @@ public class Map extends AppCompatActivity
                                 desc = "Food";
                             }
                             Marker mark = mMap.addMarker(new MarkerOptions()
-                                    .position(camPos).title(desc)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.cake)));
+                                    .position(camPos).title(desc));
+
+                                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.cake)));
+                            switch (type) {
+                                case "Desserts":
+                                    mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.cakes));
+                                    break;
+                                case "Snacks":
+                                    mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.chipss));
+                                    break;
+                                case "Meals":
+                                    mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.pizzas));
+                                    break;
+                                case "Other":
+                                    mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.asterisks));
+                                    break;
+                                default:
+                                    break;
+                            }
                             if (!snip.trim().equals("")) {
                                 mark.setSnippet(snip);
                             }
@@ -388,5 +405,40 @@ public class Map extends AppCompatActivity
             }
         }, 0, 0, false);
         tpd.show();
+    }
+
+    public void onChecked(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.cbCake:
+                if (checked) {
+                    ((CheckBox) view).setButtonDrawable(R.drawable.cakep);
+                } else {
+                    ((CheckBox) view).setButtonDrawable(R.drawable.cake);
+                }
+                break;
+            case R.id.cbChips:
+                if (checked) {
+                    ((CheckBox) view).setButtonDrawable(R.drawable.chipsp);
+                } else {
+                    ((CheckBox) view).setButtonDrawable(R.drawable.chips);
+                }
+                break;
+            case R.id.cbPizza:
+                if (checked) {
+                    ((CheckBox) view).setButtonDrawable(R.drawable.pizzap);
+                } else {
+                    ((CheckBox) view).setButtonDrawable(R.drawable.pizza);
+                }
+                break;
+            case R.id.cbAsterisk:
+                if (checked) {
+                    ((CheckBox) view).setButtonDrawable(R.drawable.asteriskp);
+                } else {
+                    ((CheckBox) view).setButtonDrawable(R.drawable.asterisk);
+                }
+                break;
+        }
     }
 }
