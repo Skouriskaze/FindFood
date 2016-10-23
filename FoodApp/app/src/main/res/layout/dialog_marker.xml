@@ -11,86 +11,116 @@
 
         <TextView
             android:text="New Food Marker"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textColor="#000"
-            android:textAlignment="center"
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/desc"
-            android:hint="Enter Description"
-            android:layout_margin="4px"
-            android:textAlignment="center"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/descHolder"
+            android:layout_margin="8dp">
 
-        <TextView
-            android:text="Type of food:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RadioGroup
-            android:id="@+id/rgType"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RadioButton
-                android:id="@+id/cbFirst"
-                android:layout_weight="1"
-                android:text="Desserts"
-                android:checked="true"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/desc"
+                android:hint="Enter Description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/cbSecond"
-                android:layout_weight="1"
-                android:text="Snacks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/cbThird"
-                android:layout_weight="1"
-                android:text="Meals"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/cbFourth"
-                android:layout_weight="1"
-                android:text="Other"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RadioGroup>
 
-        <!-- Consider tags -->
-        <TextView
-            android:text="Tags: "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
         <LinearLayout
-            android:id="@+id/llTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <CheckBox
-                android:id="@+id/cbVegetarian"
-                android:text="Vegetarian"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <CheckBox
-                android:id="@+id/cbVegan"
-                android:text="Vegan"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="Type of food:"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content" />
+
+                <RadioGroup
+                    android:id="@+id/rgType"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/cbFirst"
+                        android:text="Desserts"
+                        android:checked="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <RadioButton
+                        android:id="@+id/cbSecond"
+                        android:text="Snacks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <RadioButton
+                        android:id="@+id/cbThird"
+                        android:text="Meals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <RadioButton
+                        android:id="@+id/cbFourth"
+                        android:text="Other"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <!-- Consider tags -->
+            <LinearLayout
+                android:id="@+id/llTags"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <CheckBox
-                android:id="@+id/cbKosher"
-                android:text="Kosher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <CheckBox
-                android:id="@+id/cbDrinks"
-                android:text="Drinks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="Tags: "
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/cbVegetarian"
+                    android:text="Vegetarian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/cbVegan"
+                    android:text="Vegan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/cbKosher"
+                    android:text="Kosher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/cbDrinks"
+                    android:text="Drinks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
+
+
+
 
     </LinearLayout>
 </ScrollView>
